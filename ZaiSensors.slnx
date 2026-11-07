@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/generator/">
+    <Project Path="generator/Generator.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/Api/Api.csproj" />
   </Folder>
