@@ -1,0 +1,10 @@
+bin/
+obj/
+.vs/
+.vscode/
+.idea/
+*.user
+.env
+node_modules/
+raporty/
+wyniki.csv
