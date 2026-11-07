@@ -42,5 +42,8 @@ app.Use(async (ctx, next) =>
 
 app.MapGet("/api/health", () => Results.Ok(new { status = "ok" }));
 app.MapAuth();
+app.MapSeries();
+app.MapSensors();
+app.MapMeasurements();
 
 app.Run();
