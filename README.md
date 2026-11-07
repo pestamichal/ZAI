@@ -23,3 +23,29 @@ Testy sprawdzają także, że wyników nie da się zapisać bez klucza czujnika 
 
 Proszę o dopilnowanie danych logowania w formularzu zgłoszenia: bez działającego logowania większość testów się nie wykona. Proszę je zweryfikować uruchamiając testy dokładnie z tymi danymi, które zostaną wpisane do formularza.
 
+
+## Generator danych (F13)
+
+Program konsolowy w `generator/`, wysyła wyniki wyłącznie przez `POST /api/measurements` z kluczem czujnika.
+
+```bash
+dotnet run --project generator -- send --api URL --key KLUCZ [opcje]
+dotnet run --project generator -- seed --api URL --user admin --pass HASLO [--hours 48]
+```
+
+| Parametr | Opis | Domyślnie |
+| --- | --- | --- |
+| `--api` | adres aplikacji | wymagany |
+| `--key` | klucz API czujnika (albo zmienna `SENSOR_API_KEY`) | wymagany |
+| `--mode` | `backfill` – seria wyników z przeszłości, `live` – bieżące wyniki co `--interval` | `backfill` |
+| `--count` | liczba wyników (w `live` bez limitu, jeśli nie podano) | 48 |
+| `--step` | odstęp znaczników czasu w `backfill`, np. `30m`, `1h` | `1h` |
+| `--interval` | odstęp wysyłania w `live`, np. `10s` | `10s` |
+| `--source` | `random`, `sine`, `walk` lub `open-meteo` | `random` |
+| `--min`, `--max` | zakres wartości dla `random`, `sine`, `walk` | 0, 30 |
+| `--period` | okres przebiegu `sine` | `24h` |
+| `--variable`, `--lat`, `--lon` | zmienna i lokalizacja Open-Meteo | `temperature_2m`, 52.23, 21.01 |
+
+`seed` loguje się jako administrator, tworzy serie Temperature, Humidity i Pressure wraz z czujnikami, a następnie przesyła ich kluczami dane pogodowe z Open-Meteo z ostatnich `--hours` godzin (dane przykładowe F11).
+
+Odrzucony wynik jest wypisywany jako `✘ Rejected (422): <powód>`, a nieważny klucz jako `✘ Key invalid or sensor unregistered`.
